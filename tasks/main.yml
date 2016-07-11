@@ -1,0 +1,25 @@
+---
+- name: Install xinetd package
+  tags: xinetd
+  yum: name=xinetd
+       state=latest
+       update_cache=yes
+  register: xinetd_yum
+
+- block:
+    - name: Configure xinetd
+      template: src={{ item.src }}
+                dest={{ item.dst }}
+                owner=root
+                group=root
+                mode=0600
+      notify: restart xinetd
+      with_items:
+        - { src: xinetd.conf.j2, dst: /etc/xinetd.conf }
+        - { src: xinetd.sysconfig.j2, dst: /etc/sysconfig/xinetd }
+    - name: Enable and start the xinetd service
+      service: name=xinetd
+               enabled=yes
+               state=started
+  tags: xinetd
+  when: xinetd_yum|success
