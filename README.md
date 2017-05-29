@@ -12,18 +12,33 @@ None
 
 Available variables are listed below, along with default values:
 
+    xinetd_defaults_bind: '0.0.0.0'
     xinetd_defaults_cps: [ '50', '10' ]
     xinetd_defaults_groups: True
     xinetd_defaults_instances: 50
+    xinetd_defaults_only_from: ''
+    xinetd_defaults_max_load: ''
+    xinetd_defaults_no_access: ''
+    xinetd_defaults_passenv: ''
     xinetd_defaults_per_source: 10
     xinetd_defaults_log_type: [ 'SYSLOG', 'daemon', 'info' ]
     xinetd_defaults_log_on_failure: [ 'HOST' ]
     xinetd_defaults_log_on_success: [ 'PID', 'HOST', 'DURATION', 'EXIT' ]
+    xinetd_defaults_mdns: False
     xinetd_defaults_umask: '002'
     xinetd_defaults_v6only: False
     xinetd_extraoptions: ''
     xinetd_includedir: /etc/xinetd.d
-    xinetd_xinetd_lang: en_US
+    xinetd_lang: en_US
+
+You can define global banners by using the variables below, base64 encoded.
+
+    xinetd_defaults_banner: |
+      YmFubmVyCg==
+    xinetd_defaults_banner_fail: |
+      YmFubmVyX2ZhaWwK
+    xinetd_defaults_banner_success: |
+      YmFubmVyX3N1Y2Nlc3MK
 
 ## Dependencies
 

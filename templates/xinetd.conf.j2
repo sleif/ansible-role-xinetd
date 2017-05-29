@@ -20,66 +20,30 @@ defaults
 
 # Define access restriction defaults
 #
-{% if xinetd_defaults_no_access is defined %}
-	no_access	= {{ xinetd_defaults_no_access }}
-{% else %}
-#	no_access	=
-{% endif %}
-{% if xinetd_defaults_only_from is defined %}
-	only_from	= {{ xinetd_defaults_only_from }}
-{% else %}
-#	only_from	=
-{% endif %}
-{% if xinetd_defaults_max_load is defined %}
-	max_load	= {{ xinetd_defaults_max_load }}
-{% else %}
-#	max_load	= 0
-{% endif %}
+	no_access	= {{ xinetd_defaults_no_access if xinetd_defaults_no_access is defined else '' }}
+	only_from	= {{ xinetd_defaults_only_from if xinetd_defaults_only_from is defined else '' }}
+	max_load	= {{ xinetd_defaults_max_load if xinetd_defaults_max_load is defined else '' }}
 	cps		= {{ xinetd_defaults_cps|join(' ') if xinetd_defaults_cps is defined else '50 10' }}
 	instances	= {{ xinetd_defaults_instances if xinetd_defaults_instances is defined else '50' }}
 	per_source	= {{ xinetd_defaults_per_source if xinetd_defaults_per_source is defined else '10' }}
 
 # Address and networking defaults
 #
-{% if xinetd_defaults_bind is defined %}
-	bind		= {{ xinetd_defaults_bind }}
-{% else %}
-#	bind		=
-{% endif %}
-{% if xinetd_defaults_mdns is defined %}
-	mdns		= {{ xinetd_defaults_mdns }}
-{% else %}
-#	mdns		= yes
-{% endif %}
+	bind		= {{ xinetd_defaults_bind if xinetd_defaults_bind is defined else '0.0.0.0' }}
+	mdns		= {{ 'yes' if xinetd_defaults_mdns is defined and xinetd_defaults_mdns else 'no' }}
 	v6only		= {{ 'yes' if xinetd_defaults_v6only is defined and xinetd_defaults_v6only else 'no' }}
 
 # setup environmental attributes
 #
-{% if xinetd_defaults_passenv is defined %}
-	passenv		= {{ xinetd_defaults_passenv }}
-{% else %}
-#	passenv		=
-{% endif %}
+	passenv		= {{ xinetd_defaults_passenv if xinetd_defaults_passenv is defined else '' }}
 	groups		= {{ 'yes' if xinetd_defaults_groups is defined and xinetd_defaults_groups else 'no' }}
 	umask		= {{ xinetd_defaults_umask if xinetd_defaults_umask is defined else '002' }}
 
 # Generally, banners are not used. This sets up their global defaults
 #
-{% if xinetd_defaults_banner is defined %}
-	banner		= {{ xinetd_defaults_banner }}
-{% else %}
-#	banner		=
-{% endif %}
-{% if xinetd_defaults_banner_fail is defined %}
-	banner_fail	= {{ xinetd_defaults_banner_fail }}
-{% else %}
-#	banner_fail	=
-{% endif %}
-{% if xinetd_defaults_banner_success is defined %}
-	banner_success	= {{ xinetd_defaults_banner_success }}
-{% else %}
-#	banner_success	=
-{% endif %}
+	banner		= {{ '/etc/xinetd.banner' if xinetd_defaults_banner is defined else '' }}
+	banner_fail	= {{ '/etc/xinetd.banner_fail' if xinetd_defaults_banner_fail is defined else '' }}
+	banner_success	= {{ '/etc/xinetd.banner_success' if xinetd_defaults_banner_success is defined else '' }}
 }
 
 includedir {{ xinetd_includedir if xinetd_includedir is defined else '/etc/xinetd.d' }}

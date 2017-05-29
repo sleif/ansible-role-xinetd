@@ -7,4 +7,4 @@ EXTRAOPTIONS="{{ xinetd_extraoptions if xinetd_extraoptions is defined else '' }
 #
 # To remove all locale information from xinetd's environment, set
 # XINETD_LANG to the empty string or the string "none".
-XINETD_LANG="{{ xinetd_xinetd_lang if xinetd_xinetd_lang is defined else 'en_US' }}"
+XINETD_LANG="{{ xinetd_lang if xinetd_lang is defined else 'en_US' }}"
