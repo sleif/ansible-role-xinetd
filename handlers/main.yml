@@ -1,5 +1,7 @@
 ---
 - name: restart xinetd
   tags: xinetd
-  service: name=xinetd
-           state=restarted
+  service:
+    name: xinetd
+    state: restarted
+...

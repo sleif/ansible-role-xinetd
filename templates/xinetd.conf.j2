@@ -14,21 +14,9 @@ defaults
 #	disabled	=
 
 # Define general logging characteristics.
-{% if xinetd_defaults_log_type is defined %}
-	log_type	= {{ xinetd_defaults_log_type|join(' ') }} 
-{% else %}
-	log_type	= SYSLOG daemon info 
-{% endif %}
-{% if xinetd_defaults_log_on_failure is defined %}
-	log_on_failure	= {{ xinetd_defaults_log_on_failure|join(' ') }}
-{% else %}
-	log_on_failure	= HOST
-{% endif %}
-{% if xinetd_defaults_log_on_success is defined %}
-	log_on_success	= {{ xinetd_defaults_log_on_success|join(' ') }}
-{% else %}
-	log_on_success	= PID HOST DURATION EXIT
-{% endif %}
+	log_type	= {{ xinetd_defaults_log_type|join(' ') if xinetd_defaults_log_type is defined else 'SYSLOG daemon info' }} 
+	log_on_failure	= {{ xinetd_defaults_log_on_failure|join(' ') if xinetd_defaults_log_on_failure is defined else 'HOST' }}
+	log_on_success	= {{ xinetd_defaults_log_on_success|join(' ') if xinetd_defaults_log_on_success is defined else 'PID HOST DURATION EXIT' }}
 
 # Define access restriction defaults
 #
@@ -47,21 +35,9 @@ defaults
 {% else %}
 #	max_load	= 0
 {% endif %}
-{% if xinetd_defaults_cps is defined %}
-	cps		= {{ xinetd_defaults_cps|join(' ') }}
-{% else %}
-	cps		= 50 10
-{% endif %}
-{% if xinetd_defaults_instances is defined %}
-	instances	= {{ xinetd_defaults_instances }}
-{% else %}
-	instances	= 50
-{% endif %}
-{% if xinetd_defaults_per_source is defined %}
-	per_source	= {{ xinetd_defaults_per_source }}
-{% else %}
-	per_source	= 10
-{% endif %}
+	cps		= {{ xinetd_defaults_cps|join(' ') if xinetd_defaults_cps is defined else '50 10' }}
+	instances	= {{ xinetd_defaults_instances if xinetd_defaults_instances is defined else '50' }}
+	per_source	= {{ xinetd_defaults_per_source if xinetd_defaults_per_source is defined else '10' }}
 
 # Address and networking defaults
 #
@@ -75,15 +51,7 @@ defaults
 {% else %}
 #	mdns		= yes
 {% endif %}
-{% if xinetd_defaults_v6only is defined %}
-{%   if xinetd_defaults_v6only %}
-	v6only		= yes
-{%   else %}
-	v6only		= no
-{%   endif %}
-{% else %}
-	v6only		= no
-{% endif %}
+	v6only		= {{ 'yes' if xinetd_defaults_v6only is defined and xinetd_defaults_v6only else 'no' }}
 
 # setup environmental attributes
 #
@@ -92,20 +60,8 @@ defaults
 {% else %}
 #	passenv		=
 {% endif %}
-{% if xinetd_defaults_groups is defined %}
-{%   if xinetd_defaults_groups %}
-	groups		= yes
-{%   else %}
-	groups		= no
-{%   endif %}
-{% else %}
-	groups		= yes
-{% endif %}
-{% if xinetd_defaults_umask is defined %}
-	umask		= {{ xinetd_defaults_umask }}
-{% else %}
-	umask		= 002
-{% endif %}
+	groups		= {{ 'yes' if xinetd_defaults_groups is defined and xinetd_defaults_groups else 'no' }}
+	umask		= {{ xinetd_defaults_umask if xinetd_defaults_umask is defined else '002' }}
 
 # Generally, banners are not used. This sets up their global defaults
 #
@@ -126,9 +82,5 @@ defaults
 {% endif %}
 }
 
-{% if xinetd_includedir is defined %}
-includedir {{ xinetd_includedir }}
-{% else %}
-includedir /etc/xinetd.d
-{% endif %}
+includedir {{ xinetd_includedir if xinetd_includedir is defined else '/etc/xinetd.d' }}
  
