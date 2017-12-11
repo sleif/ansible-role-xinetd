@@ -1,10 +1,10 @@
 ---
 - name: Ensure that the xinetd package is installed
   tags: xinetd
+  become: true
   yum:
     name: xinetd
     state: present
-    update_cache: yes
   register: xinetd_yum
 
 - block:
@@ -23,11 +23,12 @@
         - { src: xinetd.conf.j2, dst: /etc/xinetd.conf }
         - { src: xinetd.sysconfig.j2, dst: /etc/sysconfig/xinetd }
 
-    - name: Enable and start the xinetd service
+    - name: Enable and start the xinetd service on boot
       service:
         enabled: yes
         name: xinetd
         state: started
   tags: xinetd
+  become: true
   when: xinetd_yum|success
 ...

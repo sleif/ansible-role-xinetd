@@ -1,6 +1,7 @@
 ---
 - name: restart xinetd
   tags: xinetd
+  become: true
   service:
     name: xinetd
     state: restarted
