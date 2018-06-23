@@ -16,7 +16,7 @@ Available variables are listed below, along with default values:
 
     xinetd_defaults_bind: '0.0.0.0'
     xinetd_defaults_cps: '50 10'
-    xinetd_defaults_groups: True
+    xinetd_defaults_groups: true
     xinetd_defaults_instances: 50
     xinetd_defaults_only_from: ''
     xinetd_defaults_max_load: ''
@@ -34,9 +34,9 @@ Available variables are listed below, along with default values:
       - HOST
       - DURATION
       - EXIT
-    xinetd_defaults_mdns: False
+    xinetd_defaults_mdns: false
     xinetd_defaults_umask: '002'
-    xinetd_defaults_v6only: False
+    xinetd_defaults_v6only: false
     xinetd_extraoptions: ''
     xinetd_includedir: /etc/xinetd.d
     xinetd_lang: en_US
