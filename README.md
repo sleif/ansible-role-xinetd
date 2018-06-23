@@ -14,41 +14,29 @@ None
 
 Available variables are listed below, along with default values:
 
-    xinetd_defaults_bind: '0.0.0.0'
-    xinetd_defaults_cps: '50 10'
-    xinetd_defaults_groups: true
-    xinetd_defaults_instances: 50
-    xinetd_defaults_only_from: ''
-    xinetd_defaults_max_load: ''
-    xinetd_defaults_no_access: ''
-    xinetd_defaults_passenv: ''
-    xinetd_defaults_per_source: 10
-    xinetd_defaults_log_type:
-      - SYSLOG
-      - daemon
-      - info
-    xinetd_defaults_log_on_failure:
-      - HOST
-    xinetd_defaults_log_on_success:
-      - PID
-      - HOST
-      - DURATION
-      - EXIT
-    xinetd_defaults_mdns: false
-    xinetd_defaults_umask: '002'
-    xinetd_defaults_v6only: false
+    xinetd_banners: {}
+    xinetd_d: {}
+    xinetd_defaults:
+      bind: 0.0.0.0
+      cps: '50 10'
+      groups: true
+      instances: 50
+      log_on_failure:
+        - HOST
+      log_on_success:
+        - PID
+        - HOST
+        - DURATION
+        - EXIT
+      log_type: 'SYSLOG daemon info'
+      mdns: false
+      per_source: 10
+      umask: 002
+      v6only: false
     xinetd_extraoptions: ''
     xinetd_includedir: /etc/xinetd.d
     xinetd_lang: en_US
-
-You can define global banners by using the variables below, base64 encoded.
-
-    xinetd_defaults_banner: |
-      YmFubmVyCg==
-    xinetd_defaults_banner_fail: |
-      YmFubmVyX2ZhaWwK
-    xinetd_defaults_banner_success: |
-      YmFubmVyX3N1Y2Nlc3MK
+    xinetd_packages: []
 
 ## Dependencies
 
@@ -59,6 +47,42 @@ None
     - hosts: servers
       roles:
         - role: linuxhq.xinetd
+          xinetd_banners:
+            banner: |
+              YmFubmVyCg==
+            banner_fail: |
+              YmFubmVyX2ZhaWwK
+            banner_success: |
+              YmFubmVyX3N1Y2Nlc3MK
+          xinetd_d:
+            rsh:
+              disable: true
+              socket_type: stream
+            telnet:
+              disable: true
+              socket_type: stream
+          xinetd_defaults:
+            banner: /etc/xinetd.banner
+            banner_fail: /etc/xinetd.banner_fail
+            banner_success: /etc/xinetd.banner_success
+            bind: 0.0.0.0
+            cps: '50 10'
+            groups: true
+            instances: 50
+            log_on_failure:
+              - HOST
+            log_on_success:
+              - PID
+              - HOST
+              - DURATION
+              - EXIT
+            log_type: 'SYSLOG daemon info'
+            mdns: false
+            per_source: 10
+            umask: 002
+            v6only: false
+          xinetd_packages:
+            - telnet
 
 ## License
 

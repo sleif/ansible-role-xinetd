@@ -1,11 +1,14 @@
 ---
-- name: Ensure that the xinetd package is installed
+- name: Ensure that the xinetd packages is installed
   tags: xinetd
   become: true
-  yum:
-    name: xinetd
+  package:
+    name: "{{ item }}"
     state: present
-  register: xinetd_yum
+  register: xinetd_package
+  with_items:
+    - xinetd
+    - "{{ xinetd_packages }}"
 
 - name: Attempting to overlay xinetd configurations
   tags: xinetd
@@ -18,12 +21,40 @@
     mode: 0600
   notify: restart xinetd
   with_items:
-    - { src: xinetd.banner.j2, dst: /etc/xinetd.banner }
-    - { src: xinetd.banner_fail.j2, dst: /etc/xinetd.banner_fail }
-    - { src: xinetd.banner_success.j2, dst: /etc/xinetd.banner_success }
     - { src: xinetd.conf.j2, dst: /etc/xinetd.conf }
     - { src: xinetd.sysconfig.j2, dst: /etc/sysconfig/xinetd }
-  when: xinetd_yum is success
+  when: xinetd_package is success
+
+- name: Attempting to overlay xinetd banners, if applicable
+  tags: xinetd
+  become: true
+  template:
+    src: xinetd.banner.j2
+    dest: "{{ xinetd_defaults[item] }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart xinetd
+  with_items: "{{ xinetd_banners }}"
+  when:
+    - xinetd_banners[item]|length > 0
+    - xinetd_defaults[item] is defined
+    - xinetd_package is success
+
+- name: Attempting to overlay xinetd.d configurations, if applicable
+  tags: xinetd
+  become: true
+  template:
+    src: xinetd_d.j2
+    dest: "{{ xinetd_includedir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart xinetd
+  with_items: "{{ xinetd_d }}"
+  when:
+    - xinetd_d[item]|length > 0
+    - xinetd_package is success
 
 - name: Ensure that xinetd is started and enabled on boot
   tags: xinetd
@@ -32,5 +63,5 @@
     enabled: yes
     name: xinetd
     state: started
-  when: xinetd_yum is success
+  when: xinetd_package is success
 ...

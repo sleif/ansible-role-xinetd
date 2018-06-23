@@ -1,8 +1,8 @@
 # {{ ansible_managed }}
 
-defaults
+service {{ item }}
 {
-{% for key, value in xinetd_defaults.iteritems()|sort %}
+{% for key, value in xinetd_d[item].iteritems()|sort %}
 {%   if value is sameas true %}
     {{ key }} = yes
 {%   elif value is sameas false %}
@@ -18,5 +18,3 @@ defaults
 {%   endif %}
 {% endfor %}
 }
-
-includedir {{ xinetd_includedir }}

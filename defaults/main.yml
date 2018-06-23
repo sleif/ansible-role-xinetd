@@ -1,28 +1,25 @@
 ---
-xinetd_defaults_bind: '0.0.0.0'
-xinetd_defaults_cps: '50 10'
-xinetd_defaults_groups: true
-xinetd_defaults_instances: 50
-xinetd_defaults_only_from: ''
-xinetd_defaults_max_load: ''
-xinetd_defaults_no_access: ''
-xinetd_defaults_passenv: ''
-xinetd_defaults_per_source: 10
-xinetd_defaults_log_type:
-  - SYSLOG
-  - daemon
-  - info
-xinetd_defaults_log_on_failure:
-  - HOST
-xinetd_defaults_log_on_success:
-  - PID
-  - HOST
-  - DURATION
-  - EXIT
-xinetd_defaults_mdns: false
-xinetd_defaults_umask: '002'
-xinetd_defaults_v6only: false
+xinetd_banners: {}
+xinetd_d: {}
+xinetd_defaults:
+  bind: 0.0.0.0
+  cps: '50 10'
+  groups: true
+  instances: 50
+  log_on_failure:
+    - HOST
+  log_on_success:
+    - PID
+    - HOST
+    - DURATION
+    - EXIT
+  log_type: 'SYSLOG daemon info'
+  mdns: false
+  per_source: 10
+  umask: 002
+  v6only: false
 xinetd_extraoptions: ''
 xinetd_includedir: /etc/xinetd.d
 xinetd_lang: en_US
+xinetd_packages: []
 ...

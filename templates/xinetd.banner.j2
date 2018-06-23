@@ -1,1 +1,1 @@
-{{ xinetd_defaults_banner|b64decode if xinetd_defaults_banner is defined else '' }}
+{{ xinetd_banners[item]|b64decode }}
