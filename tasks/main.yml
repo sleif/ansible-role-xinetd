@@ -7,28 +7,30 @@
     state: present
   register: xinetd_yum
 
-- block:
-    - name: Applying xinetd configurations
-      template:
-        src: "{{ item.src }}"
-        dest: "{{ item.dst }}"
-        owner: root
-        group: root
-        mode: 0600
-      notify: restart xinetd
-      with_items:
-        - { src: xinetd.banner.j2, dst: /etc/xinetd.banner }
-        - { src: xinetd.banner_fail.j2, dst: /etc/xinetd.banner_fail }
-        - { src: xinetd.banner_success.j2, dst: /etc/xinetd.banner_success }
-        - { src: xinetd.conf.j2, dst: /etc/xinetd.conf }
-        - { src: xinetd.sysconfig.j2, dst: /etc/sysconfig/xinetd }
-
-    - name: Enable and start the xinetd service on boot
-      service:
-        enabled: yes
-        name: xinetd
-        state: started
+- name: Attempting to overlay xinetd configurations
   tags: xinetd
   become: true
-  when: xinetd_yum|success
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart xinetd
+  with_items:
+    - { src: xinetd.banner.j2, dst: /etc/xinetd.banner }
+    - { src: xinetd.banner_fail.j2, dst: /etc/xinetd.banner_fail }
+    - { src: xinetd.banner_success.j2, dst: /etc/xinetd.banner_success }
+    - { src: xinetd.conf.j2, dst: /etc/xinetd.conf }
+    - { src: xinetd.sysconfig.j2, dst: /etc/sysconfig/xinetd }
+  when: xinetd_yum is success
+
+- name: Ensure that xinetd is started and enabled on boot
+  tags: xinetd
+  become: true
+  service:
+    enabled: yes
+    name: xinetd
+    state: started
+  when: xinetd_yum is success
 ...
