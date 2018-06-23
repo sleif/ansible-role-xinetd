@@ -1,5 +1,5 @@
 ---
-- name: Ensure that the xinetd packages is installed
+- name: Ensure that the xinetd packages are installed
   tags: xinetd
   become: true
   package:
