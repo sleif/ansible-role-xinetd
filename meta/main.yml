@@ -1,6 +1,7 @@
 ---
 dependencies: []
 galaxy_info:
+  role_name: xinetd
   author: tkimball83
   description: RHEL/CentOS - Extended Internet daemon
   license: GPLv3
