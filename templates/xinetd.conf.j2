@@ -2,7 +2,7 @@
 
 defaults
 {
-{% for key, value in xinetd_defaults.iteritems()|sort %}
+{% for key, value in xinetd_defaults.items()|sort %}
 {%   if value is sameas true %}
     {{ key }} = yes
 {%   elif value is sameas false %}
