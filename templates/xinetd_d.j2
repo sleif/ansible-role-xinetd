@@ -2,7 +2,7 @@
 
 service {{ item }}
 {
-{% for key, value in xinetd_d[item].iteritems()|sort %}
+{% for key, value in xinetd_d[item].items()|sort %}
 {%   if value is sameas true %}
     {{ key }} = yes
 {%   elif value is sameas false %}
